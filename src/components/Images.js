@@ -4,27 +4,26 @@ import { useState, useEffect } from 'react'
 const Images = ({imageArr}) => {
     const [index, setIndex] = useState(0)
     const [imageUrl, setImageUrl] = useState([])
-    const [limitedImage, setLimitedImage]= useState([])
+    const [isLoading, setIsLoading]= useState(true)
 
 
     let image = imageArr.map((img) => {
-        return <img src={img} key={img} alt='{img}'/>
-
+        return <img src={img} key={img} alt={img}/>
     })
 
-    // let imageList = imageUrl.map((img) => {
+    let imageList = imageUrl.map((img) => {
+        return <img src={img.url} key={img.id} alt={img.title} />
+    }).slice(0, 5)
+    console.log(imageList)
 
-    //     return img.url
-    // })
-    // console.log(imageList)
-
-    // useEffect (() => {
-    //     fetch('https://jsonplaceholder.typicode.com/photos')
-    //     .then(res => res.json())
-    //     .then (data => setImageUrl(data))
+    useEffect (() => {
+        fetch('https://jsonplaceholder.typicode.com/photos')
+        .then(res => res.json())
+        .then (data => setImageUrl(data))
+        setIsLoading(false)
 
        
-    // }, [])
+    }, [])
 
     const handlePrevButton = () => {
         if ( index === 0) {
@@ -48,7 +47,8 @@ const Images = ({imageArr}) => {
 
     return (
         <>
-        {image[index]}
+        {/* {image[index]} */}
+        {isLoading ? (<h2>Loading...</h2>) : imageList[index]}
         <button onClick={handlePrevButton}>Prev</button>
         {index}
         <button onClick={handleNextbutton}>Next</button>
